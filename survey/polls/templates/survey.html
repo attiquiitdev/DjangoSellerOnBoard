@@ -1,0 +1,50 @@
+
+
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+  {{ wizard.form.media }}
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="mb-4">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <form action="" method="post" class="pb-5">{% csrf_token %}
+          <div class="card">
+            <div class="card-body">
+              {{ wizard.management_form }}
+              {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                  {{ form.as_table }}
+                {% endfor %}
+              {% else %}
+                {{ wizard.form }}
+              {% endif %}
+            </div>
+          </div>
+          <div class="d-flex justify-content-between pt-3">
+            {% if wizard.steps.prev %}
+              <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" class="btn btn-secondary">{% trans "First Step" %}</button>
+              <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-secondary">{% trans "Prev Step" %}</button>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">{% trans "Next" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+{% endblock %}
+
+
+
